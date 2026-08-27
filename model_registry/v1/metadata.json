@@ -1,0 +1,53 @@
+{
+    "model_version": "v1",
+    "model_name": "Tuned Random Forest",
+    "model_type": "RandomForestRegressor",
+    "training_date": "2026-08-25",
+    "dataset_version": "features_v1.csv",
+    "framework": "scikit-learn",
+    "sklearn_version": "1.8.0",
+    "python_version": "3.13.4",
+    "target": "AQI",
+    "scaler_required": false,
+    "source_metadata": {
+        "phase": "Phase 8B",
+        "model_name": "Tuned Random Forest",
+        "dataset": "feature_store/features_v1.csv",
+        "dataset_rows": 694,
+        "training_samples": 555,
+        "testing_samples": 139,
+        "target": "AQI",
+        "features": [
+            "Temperature",
+            "Humidity",
+            "Pressure",
+            "Wind_Speed",
+            "PM2.5",
+            "PM10",
+            "CO",
+            "NO2",
+            "SO2",
+            "O3",
+            "NH3",
+            "Hour",
+            "Day",
+            "Month",
+            "Weekday",
+            "AQI_Lag_1",
+            "AQI_Lag_2",
+            "AQI_Lag_3"
+        ],
+        "excluded_features": [
+            "AQI_Change",
+            "AQI_Moving_Average_3H"
+        ],
+        "data_leakage_check": "passed",
+        "metrics": {
+            "MAE": 0.04219424460431653,
+            "RMSE": 0.10686591477644868,
+            "R2": 0.9932439658603797
+        },
+        "train_test_split": "80/20 chronological",
+        "random_state": 42
+    }
+}

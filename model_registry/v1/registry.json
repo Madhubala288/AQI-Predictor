@@ -1,0 +1,10 @@
+{
+    "model_version": "v1",
+    "status": "Production",
+    "registered_on": "2026-08-25",
+    "current_best_model": "Tuned Random Forest",
+    "model_type": "RandomForestRegressor",
+    "model_path": "model_registry\\v1\\best_model.pkl",
+    "metrics_path": "model_registry\\v1\\metrics.json",
+    "metadata_path": "model_registry\\v1\\metadata.json"
+}

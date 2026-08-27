@@ -1,0 +1,24 @@
+==================================
+Historical Data Validation
+==================================
+
+Rows: 720
+Columns: 11
+
+Duplicate Records: 0
+
+Missing Values:
+Date           0
+City           0
+PM2.5          0
+PM10           0
+NO2            0
+O3             0
+SO2            0
+CO             0
+Temperature    0
+Humidity       0
+Wind_Speed     0
+
+Date Range:
+2024-01-01 00:00:00 to 2024-01-30 23:00:00
