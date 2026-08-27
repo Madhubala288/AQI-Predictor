@@ -1,0 +1,48 @@
+name: AQI Feature Pipeline
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 * * * *"
+
+jobs:
+  feature-pipeline:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Upgrade pip
+        run: python -m pip install --upgrade pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run preprocessing
+        run: python scripts/preprocess_data.py
+
+      - name: Run feature engineering
+        run: python scripts/feature_engineering.py
+
+      - name: Update feature store
+        run: python scripts/store_features.py
+
+      - name: Validate generated feature store
+        run: |
+          python -c "import pandas as pd; df=pd.read_csv('feature_store/features_v1.csv'); print('Feature Store Shape:', df.shape); assert len(df) > 0; print('Feature Store validation passed.')"
+
+      - name: Upload feature store artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: feature-store
+          path: |
+            feature_store/features_v1.csv
+            feature_store/metadata.json
