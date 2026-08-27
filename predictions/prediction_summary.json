@@ -4,32 +4,32 @@
     "forecast_hours": 72,
     "forecast_days": 3,
     "location": "Karachi",
-    "generated_on": "2026-08-25T18:20:48.384678+00:00",
+    "generated_on": "2026-08-27T12:19:25.012208+00:00",
     "prediction_file": "D:\\laptop data\\AQI-Predictor\\predictions\\predictions.csv",
     "daily_summary": [
         {
-            "Date": "2026-08-25",
-            "Average_AQI": 2.5341666666666667,
-            "Minimum_AQI": 2.505,
-            "Maximum_AQI": 2.54
-        },
-        {
-            "Date": "2026-08-26",
-            "Average_AQI": 2.5722916666666666,
-            "Minimum_AQI": 2.55,
-            "Maximum_AQI": 2.6
-        },
-        {
             "Date": "2026-08-27",
-            "Average_AQI": 2.638333333333333,
-            "Minimum_AQI": 2.58,
-            "Maximum_AQI": 2.885
+            "Average_AQI": 2.5783333333333336,
+            "Minimum_AQI": 2.545,
+            "Maximum_AQI": 2.585
         },
         {
             "Date": "2026-08-28",
-            "Average_AQI": 2.786111111111111,
-            "Minimum_AQI": 2.615,
-            "Maximum_AQI": 2.985
+            "Average_AQI": 2.6062499999999997,
+            "Minimum_AQI": 2.58,
+            "Maximum_AQI": 2.65
+        },
+        {
+            "Date": "2026-08-29",
+            "Average_AQI": 2.5904166666666666,
+            "Minimum_AQI": 2.58,
+            "Maximum_AQI": 2.615
+        },
+        {
+            "Date": "2026-08-30",
+            "Average_AQI": 2.5925,
+            "Minimum_AQI": 2.58,
+            "Maximum_AQI": 2.615
         }
     ]
 }

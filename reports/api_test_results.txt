@@ -1,0 +1,18 @@
+C:\Users\prime\AppData\Roaming\Python\Python313\site-packages\requests\__init__.py:113: RequestsDependencyWarning: urllib3 (2.5.0) or chardet (7.4.3)/charset_normalizer (3.4.3) doesn't match a supported version!
+  warnings.warn(
+Requesting future air pollution forecast...
+Status Code: 200
+Forecast data received successfully.
+Number of forecast records: 96
+
+First forecast record:
+{'main': {'aqi': 3}, 'components': {'co': 67.84, 'no': 0.01, 'no2': 0.06, 'o3': 41.39, 'so2': 0.51, 'pm2_5': 18.62, 'pm10': 84.11, 'nh3': 0}, 'dt': 1787828400}
+C:\Users\prime\AppData\Roaming\Python\Python313\site-packages\requests\__init__.py:113: RequestsDependencyWarning: urllib3 (2.5.0) or chardet (7.4.3)/charset_normalizer (3.4.3) doesn't match a supported version!
+  warnings.warn(
+Requesting future weather forecast...
+Status Code: 200
+Weather forecast received successfully.
+Number of forecast records: 40
+
+First weather forecast record:
+{'dt': 1787832000, 'main': {'temp': 31.07, 'feels_like': 32.94, 'temp_min': 29.64, 'temp_max': 31.07, 'pressure': 1002, 'sea_level': 1002, 'grnd_level': 1001, 'humidity': 51, 'temp_kf': 1.43, 'dew_point': 19.74}, 'weather': [{'id': 803, 'main': 'Clouds', 'description': 'broken clouds', 'icon': '04d'}], 'clouds': {'all': 53}, 'wind': {'speed': 8.13, 'deg': 243, 'gust': 8.65}, 'visibility': 10000, 'pop': 0, 'sys': {'pod': 'd'}, 'dt_txt': '2026-08-27 12:00:00'}

@@ -1,0 +1,134 @@
+===== DATA PIPELINE TEST =====
+INFO - Loading dataset from: D:\laptop data\AQI-Predictor\data\historical\karachi_historical_dataset.csv
+INFO - Dataset loaded successfully.
+INFO - Dataset schema validation successful.
+INFO - Missing values handled.
+INFO - Removed 0 duplicate rows.
+INFO - Timestamp column converted to datetime successfully.
+INFO - Dataset sorted chronologically.
+INFO - Clean dataset saved to: D:\laptop data\AQI-Predictor\data\processed\cleaned_data.csv
+INFO - \u2705 Phase 4D Execution Complete!
+
+
+============================================================
+AQI DATA PREPROCESSING PIPELINE
+============================================================
+
+========== DATA QUALITY REPORT ==========
+Rows                : 697
+Columns             : 14
+Missing Values      : 0
+Duplicate Rows      : 0
+Is Empty            : False
+=========================================
+
+============================================================
+PREPROCESSING COMPLETED SUCCESSFULLY!
+============================================================
+Loading cleaned dataset...
+Dataset loaded successfully.
+Original Shape: (697, 14)
+Timestamp converted and dataset sorted.
+
+========== FEATURE ENGINEERING CHECK ==========
+Final Shape: (694, 23)
+
+New Columns:
+- Hour
+- Day
+- Month
+- Weekday
+- AQI_Change
+- AQI_Moving_Average_3H
+- AQI_Lag_1
+- AQI_Lag_2
+- AQI_Lag_3
+
+Missing Values:
+Timestamp                0
+City                     0
+Temperature              0
+Humidity                 0
+Pressure                 0
+Wind_Speed               0
+AQI                      0
+PM2.5                    0
+PM10                     0
+CO                       0
+NO2                      0
+SO2                      0
+O3                       0
+NH3                      0
+Hour                     0
+Day                      0
+Month                    0
+Weekday                  0
+AQI_Change               0
+AQI_Moving_Average_3H    0
+AQI_Lag_1                0
+AQI_Lag_2                0
+AQI_Lag_3                0
+dtype: int64
+
+============================================
+PHASE 6 COMPLETED SUCCESSFULLY!
+Processed dataset saved at:
+data/processed/processed_data.csv
+============================================
+Loading processed dataset...
+Dataset loaded successfully.
+Input Shape: (694, 23)
+
+Validating feature columns...
+All required feature columns are available.
+
+Feature dataset created.
+Feature Shape: (694, 23)
+
+Checking missing values...
+Timestamp                0
+City                     0
+Temperature              0
+Humidity                 0
+Pressure                 0
+Wind_Speed               0
+AQI                      0
+PM2.5                    0
+PM10                     0
+CO                       0
+NO2                      0
+SO2                      0
+O3                       0
+NH3                      0
+Hour                     0
+Day                      0
+Month                    0
+Weekday                  0
+AQI_Change               0
+AQI_Moving_Average_3H    0
+AQI_Lag_1                0
+AQI_Lag_2                0
+AQI_Lag_3                0
+dtype: int64
+No missing values found.
+
+Features saved successfully:
+D:\laptop data\AQI-Predictor\feature_store\features_v1.csv
+
+Metadata saved successfully:
+D:\laptop data\AQI-Predictor\feature_store\metadata.json
+
+Testing Feature Store retrieval...
+Retrieved Shape: (694, 23)
+Retrieved Columns: 23
+Feature Store retrieval test passed.
+
+=======================================================
+PHASE 7 COMPLETED SUCCESSFULLY!
+=======================================================
+
+Feature Store:
+Features : D:\laptop data\AQI-Predictor\feature_store\features_v1.csv
+Metadata : D:\laptop data\AQI-Predictor\feature_store\metadata.json
+Rows     : 694
+Features : 23

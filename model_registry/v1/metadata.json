@@ -2,7 +2,7 @@
     "model_version": "v1",
     "model_name": "Tuned Random Forest",
     "model_type": "RandomForestRegressor",
-    "training_date": "2026-08-25",
+    "training_date": "2026-08-27",
     "dataset_version": "features_v1.csv",
     "framework": "scikit-learn",
     "sklearn_version": "1.8.0",
