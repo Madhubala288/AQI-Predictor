@@ -24,14 +24,14 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.13"
+          python-version: "3.11"
 
       - name: Upgrade pip
         run: python -m pip install --upgrade pip
 
       - name: Install dependencies
         run: |
-          grep -v "kivy_deps" requirements.txt > req_filtered.txt
+          grep -vE "kivy_deps|pywin32|pypiwin32|comtypes|pyttsx3" requirements.txt > req_filtered.txt
           pip install -r req_filtered.txt
 
       - name: Check Python syntax
