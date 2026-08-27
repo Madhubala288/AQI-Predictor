@@ -4,20 +4,16 @@ on:
   push:
     branches:
       - main
-
   pull_request:
     branches:
       - main
-
   workflow_dispatch:
 
 jobs:
   test:
-
     runs-on: ubuntu-latest
 
     steps:
-
       - name: Checkout repository
         uses: actions/checkout@v4
 
@@ -30,9 +26,7 @@ jobs:
         run: python -m pip install --upgrade pip
 
       - name: Install dependencies
-        run: |
-          grep -vE "kivy_deps|pywin32|pypiwin32|comtypes|pyttsx3" requirements.txt > req_filtered.txt
-          pip install -r req_filtered.txt
+        run: pip install -r requirements.txt
 
       - name: Check Python syntax
         run: |
@@ -41,5 +35,4 @@ jobs:
           python -m compileall api
 
       - name: Run tests
-        run: |
-          python -m pytest tests -v
+        run: python -m pytest tests -v
