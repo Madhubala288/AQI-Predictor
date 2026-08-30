@@ -2,10 +2,8 @@ import streamlit as st
 import pandas as pd
 import json
 from pathlib import Path
-import math
 
 from utils import get_aqi_category, get_health_advisory
-from theme import load_professional_theme
 
 
 # ============================================================
@@ -21,19 +19,16 @@ st.set_page_config(
 
 
 # ============================================================
-# LOAD THEME
-# ============================================================
-
-load_professional_theme()
-
-
-# ============================================================
 # PROJECT PATHS
 # ============================================================
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-PREDICTION_FILE = BASE_DIR / "predictions" / "predictions.csv"
+PREDICTION_FILE = (
+    BASE_DIR
+    / "predictions"
+    / "predictions.csv"
+)
 
 REGISTRY_FILE = (
     BASE_DIR
@@ -58,201 +53,7 @@ METADATA_FILE = (
 
 
 # ============================================================
-# PROFESSIONAL CSS
-# ============================================================
-
-st.markdown(
-    """
-    <style>
-
-    /* ==============================
-       MAIN APP
-    ============================== */
-
-    .stApp {
-        background-color: #0b1120;
-    }
-
-    .main .block-container {
-        max-width: 1400px;
-        padding-top: 2rem;
-        padding-bottom: 4rem;
-    }
-
-
-    /* ==============================
-       SIDEBAR
-    ============================== */
-
-    section[data-testid="stSidebar"] {
-        background-color: #0f172a;
-        border-right: 1px solid #1e293b;
-    }
-
-    section[data-testid="stSidebar"] h1,
-    section[data-testid="stSidebar"] h2,
-    section[data-testid="stSidebar"] h3 {
-        color: #f8fafc;
-    }
-
-
-    /* ==============================
-       TEXT
-    ============================== */
-
-    h1 {
-        color: #f8fafc !important;
-        font-weight: 800 !important;
-    }
-
-    h2 {
-        color: #e2e8f0 !important;
-        font-weight: 700 !important;
-    }
-
-    h3 {
-        color: #cbd5e1 !important;
-    }
-
-    p {
-        color: #94a3b8;
-    }
-
-
-    /* ==============================
-       METRIC CARDS
-    ============================== */
-
-    div[data-testid="metric-container"] {
-        background-color: #111827;
-        border: 1px solid #1e293b;
-        border-radius: 16px;
-        padding: 20px;
-        box-shadow: 0 8px 25px rgba(0,0,0,0.20);
-    }
-
-    div[data-testid="metric-container"] label {
-        color: #94a3b8 !important;
-        font-size: 0.85rem !important;
-    }
-
-    div[data-testid="metric-container"] [data-testid="stMetricValue"] {
-        color: #f8fafc !important;
-        font-weight: 750 !important;
-    }
-
-
-    /* ==============================
-       BUTTONS
-    ============================== */
-
-    .stButton > button,
-    .stDownloadButton > button {
-        border-radius: 10px;
-        font-weight: 600;
-    }
-
-
-    /* ==============================
-       DATAFRAME
-    ============================== */
-
-    div[data-testid="stDataFrame"] {
-        border: 1px solid #1e293b;
-        border-radius: 14px;
-        overflow: hidden;
-    }
-
-
-    /* ==============================
-       ALERTS
-    ============================== */
-
-    div[data-testid="stAlert"] {
-        border-radius: 12px;
-    }
-
-
-    /* ==============================
-       SELECTBOX
-    ============================== */
-
-    div[data-baseweb="select"] > div {
-        border-radius: 10px;
-    }
-
-
-    /* ==============================
-       CARDS
-    ============================== */
-
-    .info-card {
-        background-color: #111827;
-        border: 1px solid #1e293b;
-        border-radius: 16px;
-        padding: 22px;
-        margin-bottom: 15px;
-    }
-
-
-    /* ==============================
-       HERO
-    ============================== */
-
-    .hero-box {
-        background: linear-gradient(
-            135deg,
-            #111827 0%,
-            #172554 100%
-        );
-
-        border: 1px solid #263b63;
-        border-radius: 20px;
-        padding: 30px;
-        margin-bottom: 25px;
-
-        box-shadow:
-            0 15px 40px rgba(0,0,0,0.25);
-    }
-
-
-    /* ==============================
-       STATUS
-    ============================== */
-
-    .status-online {
-        background-color: #052e16;
-        border: 1px solid #166534;
-        color: #86efac;
-        border-radius: 999px;
-        padding: 7px 15px;
-        font-size: 0.8rem;
-        font-weight: 700;
-        display: inline-block;
-    }
-
-
-    /* ==============================
-       FOOTER
-    ============================== */
-
-    .footer-box {
-        text-align: center;
-        color: #64748b;
-        border-top: 1px solid #1e293b;
-        padding-top: 25px;
-        margin-top: 50px;
-        font-size: 0.85rem;
-    }
-
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
-
-# ============================================================
-# HELPER FUNCTIONS
+# LOAD JSON FILE
 # ============================================================
 
 def load_json_file(file_path):
@@ -261,96 +62,22 @@ def load_json_file(file_path):
         return {}
 
     try:
+
         with open(
             file_path,
             "r",
             encoding="utf-8"
         ) as file:
+
             return json.load(file)
 
     except Exception:
+
         return {}
 
 
-def section_title(title, subtitle=None):
-
-    st.subheader(title)
-
-    if subtitle:
-        st.caption(subtitle)
-
-
-def show_hero():
-
-    st.markdown(
-        """
-        <div class="hero-box">
-        """,
-        unsafe_allow_html=True
-    )
-
-    st.title("🌍 AQI Forecasting System")
-
-    st.write(
-        "AI-powered 72-hour Air Quality Forecasting "
-        "with Explainable Machine Learning"
-    )
-
-    st.markdown(
-        '<span class="status-online">● Production Monitoring</span>',
-        unsafe_allow_html=True
-    )
-
-    st.markdown("</div>", unsafe_allow_html=True)
-
-
-def show_aqi_card(aqi, category, advisory):
-
-    st.markdown("### 🎯 Current Air Quality")
-
-    if category == "Good":
-        st.success(
-            f"🟢 **{category}**"
-        )
-
-    elif category == "Fair":
-        st.info(
-            f"🔵 **{category}**"
-        )
-
-    elif category == "Moderate":
-        st.warning(
-            f"🟡 **{category}**"
-        )
-
-    elif category == "Poor":
-        st.warning(
-            f"🟠 **{category}**"
-        )
-
-    else:
-        st.error(
-            f"🔴 **{category}**"
-        )
-
-    col1, col2 = st.columns([1, 3])
-
-    with col1:
-
-        st.metric(
-            "Predicted AQI",
-            f"{aqi:.2f}"
-        )
-
-    with col2:
-
-        st.info(
-            f"💡 **Health Advisory**\n\n{advisory}"
-        )
-
-
 # ============================================================
-# LOAD PREDICTIONS
+# LOAD PREDICTION DATA
 # ============================================================
 
 if not PREDICTION_FILE.exists():
@@ -380,7 +107,7 @@ except Exception as e:
 
 
 # ============================================================
-# VALIDATE DATA
+# VALIDATE REQUIRED COLUMNS
 # ============================================================
 
 required_columns = [
@@ -424,10 +151,10 @@ df = df.dropna(
     ]
 )
 
-df = df.sort_values(
-    "Timestamp"
-).reset_index(
-    drop=True
+df = (
+    df
+    .sort_values("Timestamp")
+    .reset_index(drop=True)
 )
 
 
@@ -463,9 +190,7 @@ metadata = load_json_file(
 
 with st.sidebar:
 
-    st.markdown(
-        "# 🌍 AQI Predictor"
-    )
+    st.title("🌍 AQI Predictor")
 
     st.caption(
         "Air Quality Intelligence"
@@ -515,7 +240,7 @@ with st.sidebar:
 
 
 # ============================================================
-# LATEST PREDICTION
+# COMMON DATA
 # ============================================================
 
 latest = df.iloc[-1]
@@ -532,364 +257,50 @@ advisory = get_health_advisory(
     category
 )
 
+forecast_hours = len(df)
+
+forecast_days = (
+    df["Timestamp"]
+    .dt.date
+    .nunique()
+)
+
 
 # ============================================================
-# DASHBOARD — PROFESSIONAL V2
+# HEADER
+# ============================================================
+
+st.title(
+    "🌍 AQI Forecasting System"
+)
+
+st.caption(
+    "AI-powered Air Quality Intelligence | "
+    "72-Hour Forecasting | Machine Learning"
+)
+
+st.success(
+    f"🟢 System Online | 📍 Forecast Location: {city}"
+)
+
+
+# ============================================================
+# DASHBOARD
 # ============================================================
 
 if page == "Dashboard":
 
-    # ========================================================
-    # HERO HEADER
-    # ========================================================
-
-    st.title("🌍 AQI Forecasting System")
-
-    st.caption(
-        "AI-powered Air Quality Intelligence • "
-        "72-Hour Forecasting • Machine Learning"
+    st.header(
+        "📊 Air Quality Overview"
     )
-
-    st.success(
-        f"🟢 System Online  |  📍 Forecast Location: {city}"
-    )
-
-    st.divider()
-
-
-    # ========================================================
-    # GET LATEST DATA
-    # ========================================================
-
-    latest = df.iloc[-1]
-
-    latest_aqi = float(
-        latest["Predicted_AQI"]
-    )
-
-    category = get_aqi_category(
-        latest_aqi
-    )
-
-    advisory = get_health_advisory(
-        category
-    )
-
-    latest_timestamp = latest[
-        "Timestamp"
-    ]
-
-
-    # ========================================================
-    # TOP KPI SECTION
-    # ========================================================
-
-    st.subheader("📊 Air Quality Overview")
 
     st.caption(
         "Latest prediction and forecasting system status"
     )
 
-    col1, col2, col3, col4 = st.columns(4)
-
-
-    with col1:
-
-        st.metric(
-            label="Predicted AQI",
-            value=f"{latest_aqi:.2f}"
-        )
-
-
-    with col2:
-
-        st.metric(
-            label="AQI Category",
-            value=category
-        )
-
-
-    with col3:
-
-        st.metric(
-            label="Forecast Horizon",
-            value=f"{len(df)} Hours"
-        )
-
-
-    with col4:
-
-        forecast_days = math.ceil(
-            len(df) / 24
-        )
-
-        st.metric(
-            label="Forecast Days",
-            value=forecast_days
-        )
-
-
-    st.divider()
-
-
-    # ========================================================
-    # CURRENT AIR QUALITY
-    # ========================================================
-
-    st.subheader("🎯 Current Air Quality")
-
-    st.caption(
-        "Latest machine-learning prediction"
-    )
-
-
-    aqi_col1, aqi_col2 = st.columns(
-        [1, 2]
-    )
-
-
-    with aqi_col1:
-
-        st.metric(
-            label="Predicted AQI",
-            value=f"{latest_aqi:.2f}"
-        )
-
-        if category == "Good":
-
-            st.success(
-                "🟢 Good Air Quality"
-            )
-
-        elif category == "Fair":
-
-            st.info(
-                "🔵 Fair Air Quality"
-            )
-
-        elif category == "Moderate":
-
-            st.warning(
-                "🟡 Moderate Air Quality"
-            )
-
-        elif category == "Poor":
-
-            st.warning(
-                "🟠 Poor Air Quality"
-            )
-
-        else:
-
-            st.error(
-                "🔴 Very Poor Air Quality"
-            )
-
-
-    with aqi_col2:
-
-        st.info(
-            f"💡 **Health Advisory**\n\n"
-            f"{advisory}"
-        )
-
-
-    st.divider()
-
-
-    # ========================================================
-    # FORECAST TIMESTAMP
-    # ========================================================
-
-    st.subheader("🕒 Latest Forecast")
-
-    forecast_time = latest_timestamp.strftime(
-        "%d %B %Y, %I:%M %p"
-    )
-
-    st.info(
-        f"Prediction generated at **{forecast_time}**"
-    )
-
-
-    st.divider()
-
-
-    # ========================================================
-    # 72-HOUR FORECAST
-    # ========================================================
-
-    st.subheader("📈 72-Hour AQI Forecast")
-
-    st.caption(
-        "Predicted AQI trend for the upcoming forecast period"
-    )
-
-
-    chart_data = (
-        df
-        .set_index("Timestamp")[
-            ["Predicted_AQI"]
-        ]
-    )
-
-
-    st.line_chart(
-        chart_data,
-        height=420
-    )
-
-
-    st.divider()
-
-
-    # ========================================================
-    # DAILY SUMMARY
-    # ========================================================
-
-    st.subheader("📅 Daily AQI Summary")
-
-    st.caption(
-        "Average, minimum and maximum predicted AQI"
-    )
-
-
-    temp_df = df.copy()
-
-    temp_df["Date"] = (
-        temp_df["Timestamp"]
-        .dt.date
-    )
-
-
-    daily_summary = (
-        temp_df
-        .groupby("Date")[
-            "Predicted_AQI"
-        ]
-        .agg(
-            Average_AQI="mean",
-            Minimum_AQI="min",
-            Maximum_AQI="max"
-        )
-        .reset_index()
-    )
-
-
-    daily_summary[
-        "Average_AQI"
-    ] = daily_summary[
-        "Average_AQI"
-    ].round(2)
-
-
-    daily_summary[
-        "Minimum_AQI"
-    ] = daily_summary[
-        "Minimum_AQI"
-    ].round(2)
-
-
-    daily_summary[
-        "Maximum_AQI"
-    ] = daily_summary[
-        "Maximum_AQI"
-    ].round(2)
-
-
-    st.dataframe(
-        daily_summary,
-        width="stretch",
-        hide_index=True
-    )
-
-
-    st.divider()
-
-
-    # ========================================================
-    # FORECAST INSIGHTS
-    # ========================================================
-
-    st.subheader("🔎 Forecast Insights")
-
-    insight_col1, insight_col2, insight_col3 = st.columns(3)
-
-
-    max_aqi = float(
-        df["Predicted_AQI"].max()
-    )
-
-    min_aqi = float(
-        df["Predicted_AQI"].min()
-    )
-
-    avg_aqi = float(
-        df["Predicted_AQI"].mean()
-    )
-
-
-    with insight_col1:
-
-        st.metric(
-            "Maximum Forecast AQI",
-            f"{max_aqi:.2f}"
-        )
-
-
-    with insight_col2:
-
-        st.metric(
-            "Minimum Forecast AQI",
-            f"{min_aqi:.2f}"
-        )
-
-
-    with insight_col3:
-
-        st.metric(
-            "Average Forecast AQI",
-            f"{avg_aqi:.2f}"
-        )
-
-
-    st.divider()
-
-
-    # ========================================================
-    # DOWNLOAD FORECAST
-    # ========================================================
-
-    st.subheader("⬇️ Download Forecast")
-
-    st.caption(
-        "Export the complete machine-learning prediction dataset"
-    )
-
-
-    csv_data = (
-        df
-        .to_csv(index=False)
-        .encode("utf-8")
-    )
-
-
-    st.download_button(
-    label="⬇️ Download Predictions CSV",
-    data=csv_data,
-    file_name="aqi_predictions.csv",
-    mime="text/csv",
-    key="dashboard_predictions_download"
-)
-
     # --------------------------------------------------------
-    # OVERVIEW
+    # KPI CARDS
     # --------------------------------------------------------
-
-    section_title(
-        "📊 Air Quality Overview",
-        "Latest prediction and forecasting system status"
-    )
 
     col1, col2, col3, col4 = st.columns(4)
 
@@ -911,14 +322,10 @@ if page == "Dashboard":
 
         st.metric(
             "Forecast Horizon",
-            f"{len(df)} hours"
+            f"{forecast_hours} Hours"
         )
 
     with col4:
-
-        forecast_days = math.ceil(
-            len(df) / 24
-        )
 
         st.metric(
             "Forecast Days",
@@ -931,11 +338,63 @@ if page == "Dashboard":
     # CURRENT AIR QUALITY
     # --------------------------------------------------------
 
-    show_aqi_card(
-        latest_aqi,
-        category,
-        advisory
+    st.header(
+        "🎯 Current Air Quality"
     )
+
+    aqi_col1, aqi_col2 = st.columns(
+        [1, 2]
+    )
+
+    with aqi_col1:
+
+        st.metric(
+            "Predicted AQI",
+            f"{latest_aqi:.2f}"
+        )
+
+        if category == "Good":
+
+            st.success(
+                "🟢 Good Air Quality"
+            )
+
+        elif category == "Fair":
+
+            st.info(
+                "🔵 Fair Air Quality"
+            )
+
+        elif category == "Moderate":
+
+            st.warning(
+                "🟡 Moderate Air Quality"
+            )
+
+        elif category == "Unhealthy":
+
+            st.warning(
+                "🟠 Unhealthy Air Quality"
+            )
+
+        elif category == "Very Unhealthy":
+
+            st.error(
+                "🔴 Very Unhealthy Air Quality"
+            )
+
+        else:
+
+            st.error(
+                "🟣 Hazardous Air Quality"
+            )
+
+    with aqi_col2:
+
+        st.info(
+            f"💡 Health Advisory\n\n"
+            f"{advisory}"
+        )
 
     st.divider()
 
@@ -943,43 +402,46 @@ if page == "Dashboard":
     # LATEST FORECAST
     # --------------------------------------------------------
 
-    section_title(
-        "🕒 Latest Forecast",
-        "Most recent prediction generated by the ML system"
+    st.header(
+        "🕒 Latest Forecast"
     )
 
-    forecast_time = latest[
-        "Timestamp"
-    ].strftime(
-        "%d %B %Y, %I:%M %p"
+    forecast_time = (
+        latest["Timestamp"]
+        .strftime(
+            "%d %B %Y, %I:%M %p"
+        )
     )
 
     st.info(
-        f"Latest prediction timestamp: **{forecast_time}**"
+        f"Prediction generated at "
+        f"**{forecast_time}**"
     )
 
     st.divider()
 
     # --------------------------------------------------------
-    # FORECAST CHART
+    # 72-HOUR FORECAST
     # --------------------------------------------------------
 
-    section_title(
-        "📈 72-Hour AQI Forecast",
+    st.header(
+        "📈 72-Hour AQI Forecast"
+    )
+
+    st.caption(
         "Predicted AQI trend for the upcoming forecast period"
     )
 
     chart_data = (
         df
-        .set_index(
-            "Timestamp"
-        )[
+        .set_index("Timestamp")[
             ["Predicted_AQI"]
         ]
     )
 
     st.line_chart(
         chart_data,
+        width="stretch",
         height=400
     )
 
@@ -989,8 +451,11 @@ if page == "Dashboard":
     # DAILY SUMMARY
     # --------------------------------------------------------
 
-    section_title(
-        "📅 Daily AQI Summary",
+    st.header(
+        "📅 Daily AQI Summary"
+    )
+
+    st.caption(
         "Average, minimum and maximum predicted AQI"
     )
 
@@ -1003,7 +468,9 @@ if page == "Dashboard":
 
     daily_summary = (
         temp_df
-        .groupby("Date")["Predicted_AQI"]
+        .groupby("Date")[
+            "Predicted_AQI"
+        ]
         .agg(
             Average_AQI="mean",
             Minimum_AQI="min",
@@ -1032,12 +499,60 @@ if page == "Dashboard":
     st.divider()
 
     # --------------------------------------------------------
+    # FORECAST INSIGHTS
+    # --------------------------------------------------------
+
+    st.header(
+        "🔎 Forecast Insights"
+    )
+
+    max_aqi = float(
+        df["Predicted_AQI"].max()
+    )
+
+    min_aqi = float(
+        df["Predicted_AQI"].min()
+    )
+
+    avg_aqi = float(
+        df["Predicted_AQI"].mean()
+    )
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+
+        st.metric(
+            "Maximum Forecast AQI",
+            f"{max_aqi:.2f}"
+        )
+
+    with col2:
+
+        st.metric(
+            "Minimum Forecast AQI",
+            f"{min_aqi:.2f}"
+        )
+
+    with col3:
+
+        st.metric(
+            "Average Forecast AQI",
+            f"{avg_aqi:.2f}"
+        )
+
+    st.divider()
+
+    # --------------------------------------------------------
     # DOWNLOAD
     # --------------------------------------------------------
 
-    section_title(
-        "⬇️ Download Forecast",
-        "Download the complete prediction dataset"
+    st.header(
+        "⬇️ Download Forecast"
+    )
+
+    st.caption(
+        "Export the complete machine-learning prediction dataset"
     )
 
     csv_data = (
@@ -1050,7 +565,8 @@ if page == "Dashboard":
         label="⬇️ Download Predictions CSV",
         data=csv_data,
         file_name="aqi_predictions.csv",
-        mime="text/csv"
+        mime="text/csv",
+        key="dashboard_download"
     )
 
 
@@ -1060,10 +576,12 @@ if page == "Dashboard":
 
 elif page == "3-Day Forecast":
 
-    show_hero()
+    st.header(
+        "📅 3-Day AQI Forecast"
+    )
 
     st.info(
-        f"📍 **{city} — 72 Hour Forecast**"
+        f"📍 {city} | 72-Hour Forecast"
     )
 
     forecast_df = df.copy()
@@ -1073,20 +591,19 @@ elif page == "3-Day Forecast":
         .dt.date
     )
 
-    st.divider()
-
     # --------------------------------------------------------
     # DAILY SUMMARY
     # --------------------------------------------------------
 
-    section_title(
-        "📅 Daily Forecast Summary",
-        "Predicted AQI statistics for each forecast day"
+    st.subheader(
+        "📊 Daily Forecast Summary"
     )
 
     daily_summary = (
         forecast_df
-        .groupby("Date")["Predicted_AQI"]
+        .groupby("Date")[
+            "Predicted_AQI"
+        ]
         .agg(
             Average_AQI="mean",
             Minimum_AQI="min",
@@ -1118,7 +635,7 @@ elif page == "3-Day Forecast":
     # DAILY CHART
     # --------------------------------------------------------
 
-    section_title(
+    st.subheader(
         "📈 Daily AQI Trend"
     )
 
@@ -1135,6 +652,7 @@ elif page == "3-Day Forecast":
 
     st.line_chart(
         daily_chart,
+        width="stretch",
         height=400
     )
 
@@ -1144,8 +662,11 @@ elif page == "3-Day Forecast":
     # HOURLY FORECAST
     # --------------------------------------------------------
 
-    section_title(
-        "🕒 Hourly AQI Forecast",
+    st.subheader(
+        "🕒 Hourly AQI Forecast"
+    )
+
+    st.caption(
         "Detailed predictions for every forecast hour"
     )
 
@@ -1174,10 +695,11 @@ elif page == "3-Day Forecast":
 
 elif page == "Prediction History":
 
-    show_hero()
+    st.header(
+        "📚 Prediction History"
+    )
 
-    section_title(
-        "📚 Prediction History",
+    st.caption(
         "Historical predictions generated by the forecasting system"
     )
 
@@ -1185,17 +707,23 @@ elif page == "Prediction History":
 
     history["Date"] = (
         history["Timestamp"]
-        .dt.strftime("%d %B %Y")
+        .dt.strftime(
+            "%d %B %Y"
+        )
     )
 
     history["Time"] = (
         history["Timestamp"]
-        .dt.strftime("%I:%M %p")
+        .dt.strftime(
+            "%I:%M %p"
+        )
     )
 
     history["Category"] = (
         history["Predicted_AQI"]
-        .apply(get_aqi_category)
+        .apply(
+            get_aqi_category
+        )
     )
 
     history["Predicted_AQI"] = (
@@ -1218,7 +746,7 @@ elif page == "Prediction History":
 
     st.divider()
 
-    section_title(
+    st.subheader(
         "📈 Prediction Trend"
     )
 
@@ -1231,6 +759,7 @@ elif page == "Prediction History":
 
     st.line_chart(
         history_chart,
+        width="stretch",
         height=400
     )
 
@@ -1241,10 +770,11 @@ elif page == "Prediction History":
 
 elif page == "Model Information":
 
-    show_hero()
+    st.header(
+        "🤖 Machine Learning Model"
+    )
 
-    section_title(
-        "🤖 Machine Learning Model",
+    st.caption(
         "Production model information and evaluation metrics"
     )
 
@@ -1305,12 +835,11 @@ elif page == "Model Information":
     st.divider()
 
     # --------------------------------------------------------
-    # PERFORMANCE
+    # MODEL PERFORMANCE
     # --------------------------------------------------------
 
-    section_title(
-        "📊 Model Performance",
-        "Evaluation metrics from the registered production model"
+    st.subheader(
+        "📊 Model Performance"
     )
 
     col1, col2, col3 = st.columns(3)
@@ -1357,9 +886,8 @@ elif page == "Model Information":
     # MODEL REGISTRY
     # --------------------------------------------------------
 
-    section_title(
-        "🗃️ Model Registry",
-        "Registered model version and deployment status"
+    st.subheader(
+        "🗃️ Model Registry"
     )
 
     col1, col2 = st.columns(2)
@@ -1377,12 +905,11 @@ elif page == "Model Information":
     with col2:
 
         st.write(
-            "**Registry Location:**"
+            "**Registry Path:**"
         )
 
         st.code(
-            "model_registry/v1",
-            language="text"
+            "model_registry/v1"
         )
 
     if str(model_status).lower() == "production":
@@ -1403,9 +930,8 @@ elif page == "Model Information":
     # METADATA
     # --------------------------------------------------------
 
-    section_title(
-        "📋 Model Metadata",
-        "Technical information stored with the registered model"
+    st.subheader(
+        "📋 Model Metadata"
     )
 
     if metadata:
@@ -1429,14 +955,14 @@ elif page == "Model Information":
 # FOOTER
 # ============================================================
 
-st.markdown(
-    """
-    <div class="footer-box">
-        <b>AQI Forecasting System</b><br>
-        Machine Learning • Explainable AI • Automated Forecasting
-        <br><br>
-        Built for academic, research and portfolio use.
-    </div>
-    """,
-    unsafe_allow_html=True
+st.divider()
+
+st.caption(
+    "AQI Forecasting System | "
+    "Machine Learning | Explainable AI | "
+    "Automated Forecasting"
+)
+
+st.caption(
+    "Built for academic, research and portfolio use."
 )
