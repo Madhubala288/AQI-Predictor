@@ -23,6 +23,10 @@
 - 95th Percentile Error: **0.2200**
 - High-error observations: **8**
 
+The model achieved a very low average prediction error. The MAE of 0.0422 indicates that the predicted AQI values differ from the actual values by approximately 0.04 AQI units on average.
+
+The RMSE of 0.1069 indicates that larger prediction errors were also relatively low. The R² score of 0.9932 means that the model explains approximately 99.32% of the variance in the target AQI values.
+
 ## 4. Test Period
 
 - Start: `2024-01-25 06:00:00+00:00`
@@ -36,6 +40,7 @@
 - **Wind_Speed**: 0.0020
 - **Pressure**: 0.0018
 
+PM2.5 was the most influential feature in the Random Forest model, contributing approximately 98.05% of the model's feature importance.
 
 ## 6. Generated Charts
 
@@ -45,10 +50,10 @@
 
 ## 7. Conclusion
 
-The trained model was evaluated on the final 20% of the chronological dataset.
+The trained Random Forest model was evaluated on the final 20% of the chronological dataset, using 555 samples for training and 139 samples for testing.
 
-The evaluation uses MAE, RMSE and R² to measure prediction performance.
+The model achieved an MAE of 0.0422, an RMSE of 0.1069, and an R² score of 0.9932. These results indicate strong predictive performance on the test dataset, with approximately 99.32% of the variance in AQI values explained by the model.
 
-Because this project uses time-series data, the evaluation was performed without random shuffling.
+Because this project uses time-series data, the evaluation was performed without random shuffling to preserve the chronological order of observations.
 
-The model's performance should be interpreted in the context of the OpenWeather AQI index used in the dataset.
+The model's performance should be interpreted in the context of the OpenWeather AQI index used in the dataset. The reported R² score represents explained variance and should not be interpreted as classification accuracy.
